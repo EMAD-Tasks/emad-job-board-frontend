@@ -88,122 +88,202 @@ class _DettaglioAnnuncioScreenState extends State<DettaglioAnnuncioScreen> {
     final annuncio = widget.annuncio;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Dettaglio Annuncio')),
+      appBar: AppBar(title: const Text('Dettaglio Offerta')),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 22, 16, 24),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // --- INTESTAZIONE ANNUNCIO ---
-            Text(
-              annuncio.titolo,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 6),
-            if (annuncio.aziendaNome.isNotEmpty)
-              Text(
-                'Azienda: ${annuncio.aziendaNome}',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.w500,
+            // --- FOGLIETTO DELL'OFFERTA ---
+            Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.topCenter,
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFFDF7),
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(color: Colors.black12),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        annuncio.titolo,
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xFF222222),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 12,
+                        runSpacing: 8,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          if (annuncio.aziendaNome.isNotEmpty)
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.apartment, size: 16, color: Color(0xFF2B5943)),
+                                const SizedBox(width: 4),
+                                Text(
+                                  annuncio.aziendaNome,
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF2B5943),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          if (annuncio.ral != null)
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF2B5943).withValues(alpha: 0.12),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                'RAL: ${annuncio.ral} €',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF2B5943),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                      const Divider(height: 28),
+                      Text(
+                        annuncio.descrizione,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          height: 1.5,
+                          color: Color(0xFF333333),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            if (annuncio.ral != null) ...[
-              const SizedBox(height: 8),
-              Chip(
-                avatar: const Icon(Icons.euro, size: 18),
-                label: Text('RAL: ${annuncio.ral} €'),
-              ),
-            ],
-            const SizedBox(height: 16),
-            Text(
-              annuncio.descrizione,
-              style: const TextStyle(fontSize: 15, height: 1.4),
+                Positioned(
+                  top: -7,
+                  child: Container(
+                    width: 16,
+                    height: 16,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFD94E4E),
+                      shape: BoxShape.circle,
+                      boxShadow: const [
+                        BoxShadow(color: Colors.black38, blurRadius: 3, offset: Offset(1, 2)),
+                      ],
+                      border: Border.all(color: Colors.white70, width: 1.5),
+                    ),
+                  ),
+                ),
+              ],
             ),
 
-            const Divider(height: 40),
+            const SizedBox(height: 20),
 
-            // --- FORM CANDIDATURA ---
-            Text(
-              'Candidati per questa posizione',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+            // --- SCHEDA CANDIDATURA ---
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.black12),
               ),
-            ),
-            const SizedBox(height: 16),
-            Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextFormField(
-                    controller: _nomeCtrl,
-                    decoration: const InputDecoration(
-                      labelText: 'Nome',
-                      border: OutlineInputBorder(),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Invia la tua candidatura',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    textCapitalization: TextCapitalization.words,
-                    validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Inserisci il nome' : null,
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _cognomeCtrl,
-                    decoration: const InputDecoration(
-                      labelText: 'Cognome',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _nomeCtrl,
+                      decoration: const InputDecoration(
+                        labelText: 'Nome',
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Color(0xFFFAFAFA),
+                      ),
+                      textCapitalization: TextCapitalization.words,
+                      validator: (v) =>
+                      (v == null || v.trim().isEmpty) ? 'Inserisci il nome' : null,
                     ),
-                    textCapitalization: TextCapitalization.words,
-                    validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Inserisci il cognome' : null,
-                  ),
-                  const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _emailCtrl,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _cognomeCtrl,
+                      decoration: const InputDecoration(
+                        labelText: 'Cognome',
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Color(0xFFFAFAFA),
+                      ),
+                      textCapitalization: TextCapitalization.words,
+                      validator: (v) =>
+                      (v == null || v.trim().isEmpty) ? 'Inserisci il cognome' : null,
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (v) {
-                      if (v == null || v.trim().isEmpty) return 'Inserisci l\'email';
-                      if (!v.contains('@')) return 'Email non valida';
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Selettore PDF
-                  OutlinedButton.icon(
-                    onPressed: _invioInCorso ? null : _scegliPdf,
-                    icon: const Icon(Icons.picture_as_pdf),
-                    label: Text(
-                      _nomeFileCv ?? 'Allega Curriculum (PDF)',
-                      overflow: TextOverflow.ellipsis,
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _emailCtrl,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Color(0xFFFAFAFA),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) return 'Inserisci l\'email';
+                        if (!v.contains('@')) return 'Email non valida';
+                        return null;
+                      },
                     ),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                    const SizedBox(height: 16),
+                    OutlinedButton.icon(
+                      onPressed: _invioInCorso ? null : _scegliPdf,
+                      icon: const Icon(Icons.picture_as_pdf),
+                      label: Text(
+                        _nomeFileCv ?? 'Allega Curriculum (PDF)',
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  FilledButton(
-                    onPressed: _invioInCorso ? null : _inviaCandidatura,
-                    style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    const SizedBox(height: 20),
+                    FilledButton(
+                      onPressed: _invioInCorso ? null : _inviaCandidatura,
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: _invioInCorso
+                          ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                      )
+                          : const Text('Invia Candidatura'),
                     ),
-                    child: _invioInCorso
-                        ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                    )
-                        : const Text('Invia Candidatura'),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
