@@ -8,7 +8,7 @@ class Azienda {
     required this.id,
     required this.nome,
     required this.email,
-    required this.password,
+    this.password = ''
   });
 
   factory Azienda.fromJson(Map<String, dynamic> json) {
@@ -16,7 +16,7 @@ class Azienda {
       id: json['id'] as String,
       nome: (json['nome'] as String),
       email: json['email'] as String,
-      password: json['password'] as String,
+      password: json['password'] as String? ?? '',
     );
   }
 
