@@ -27,6 +27,11 @@ class _DashboardAziendaScreenState extends State<DashboardAziendaScreen> {
     });
   }
 
+  Future<int> _getNumeroCandidati(Annuncio annuncio) async {
+    List<Candidatura> canditature = await ApiService.instance.getCandidature(annuncio.id);
+    return canditature.length;
+  }
+
   void _logout() {
     ApiService.instance.logout();
     Navigator.pop(context);
@@ -243,9 +248,19 @@ class _DashboardAziendaScreenState extends State<DashboardAziendaScreen> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    trailing: const Chip(
-                      avatar: Icon(Icons.people, size: 16),
-                      label: Text('Candidati'),
+                    trailing: FutureBuilder<int>(
+                      future: _getNumeroCandidati(annuncio),
+                      builder: (context, snapshot) {
+                        final count = snapshot.data;
+                        final labelText = count == null
+                            ? '...'
+                            : '$count ${count == 1 ? 'Candidato' : 'Candidati'}';
+
+                        return Chip(
+                          avatar: const Icon(Icons.people, size: 16),
+                          label: Text(labelText),
+                        );
+                      },
                     ),
                     onTap: () => _mostraCandidature(annuncio),
                   ),
