@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:emad_job_board/utils/board_style.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -103,7 +104,7 @@ class _DettaglioAnnuncioScreenState extends State<DettaglioAnnuncioScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFFDF7),
+                    color: BoardStyle.noteColorFor(annuncio.id),
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all(color: Colors.black12),
                     boxShadow: const [
@@ -181,7 +182,7 @@ class _DettaglioAnnuncioScreenState extends State<DettaglioAnnuncioScreen> {
                     width: 16,
                     height: 16,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFD94E4E),
+                      color: BoardStyle.pinColorFor(annuncio.id),
                       shape: BoxShape.circle,
                       boxShadow: const [
                         BoxShadow(color: Colors.black38, blurRadius: 3, offset: Offset(1, 2)),

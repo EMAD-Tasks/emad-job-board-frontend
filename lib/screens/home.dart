@@ -1,4 +1,5 @@
 import 'package:emad_job_board/screens/dashboard_azienda.dart';
+import 'package:emad_job_board/utils/board_style.dart';
 import 'package:flutter/material.dart';
 
 import '../models/annuncio.dart';
@@ -168,8 +169,8 @@ class _AnnuncioPinCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = _noteColors[index % _noteColors.length];
-    final pinColor = _pinColors[index % _pinColors.length];
+    final bgColor = BoardStyle.noteColorFor(annuncio.id);
+    final pinColor = BoardStyle.pinColorFor(annuncio.id);
     // Leggerissima inclinazione alternata per simulare fogli appesi a mano
     final angle = (index % 2 == 0) ? -0.012 : 0.012;
 
