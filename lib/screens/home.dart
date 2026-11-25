@@ -1,11 +1,10 @@
+import 'package:emad_job_board/screens/dashboard_azienda.dart';
 import 'package:flutter/material.dart';
 
 import '../models/annuncio.dart';
 import '../services/api_service.dart';
 import 'dettaglio_annuncio.dart';
-// Scommenta queste due righe quando creeremo le schermate azienda:
-// import 'auth_screen.dart';
-// import 'dashboard_azienda_screen.dart';
+import 'auth_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _apriAreaAzienda() async {
     // Scommenta questo blocco al prossimo passo quando aggiungeremo AuthScreen e DashboardAziendaScreen:
-    /*
     final destinazione = ApiService.instance.isLoggedIn
         ? const DashboardAziendaScreen()
         : const AuthScreen();
@@ -41,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
       MaterialPageRoute(builder: (_) => destinazione),
     );
     _caricaAnnunci(); // Ricarica al rientro nel caso siano stati pubblicati nuovi annunci
-    */
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Area Azienda: schermate in arrivo al prossimo passo')),
     );

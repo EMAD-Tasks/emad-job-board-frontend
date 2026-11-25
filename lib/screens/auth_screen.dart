@@ -1,7 +1,6 @@
+import 'package:emad_job_board/screens/dashboard_azienda.dart';
 import 'package:flutter/material.dart';
-
 import '../services/api_service.dart';
-import 'dashboard_azienda_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
