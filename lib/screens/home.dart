@@ -38,10 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       MaterialPageRoute(builder: (_) => destinazione),
     );
-    _caricaAnnunci(); // Ricarica al rientro nel caso siano stati pubblicati nuovi annunci
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Area Azienda: schermate in arrivo al prossimo passo')),
-    );
+    _caricaAnnunci();
   }
 
   @override
@@ -133,13 +130,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        if (annuncio.ral != null) ...[
-                          const SizedBox(height: 8),
-                          Chip(
-                            label: Text('RAL: ${annuncio.ral} €'),
-                            visualDensity: VisualDensity.compact,
+                        const SizedBox(height: 8),
+                        Chip(
+                          label: Text(annuncio.ral != null
+                              ? 'RAL: ${annuncio.ral} €'
+                              : 'RAL: Non specificato'
                           ),
-                        ],
+                          visualDensity: VisualDensity.compact,
+                        ),
                       ],
                     ),
                     trailing: const Icon(Icons.chevron_right),
